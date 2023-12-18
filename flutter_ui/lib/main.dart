@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,72 +27,55 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-Widget buildText(BuildContext context,{required Color color, required String title, required double font}) {
-  return Text(title, style: Theme.of(context).textTheme.titleMedium!.copyWith(
-    color: color,
-    fontSize: font,
-  ),
-  );
-}
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final Color bodyColor = Theme.of(context).colorScheme.onBackground;
     final Color appBarColor = Theme.of(context).colorScheme.primary;
-
+    var i = 0;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: buildText( context, color: appBarColor, title: 'Toast Demo', font: 25),
-      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ListTile(
-                onTap: (){
-                  showToast('This is normal toast with animation',
-                    context: context,
-                    animation: StyledToastAnimation.scale,
-                    reverseAnimation: StyledToastAnimation.fade,
-                    position: StyledToastPosition.center,
-                    animDuration: Duration(seconds: 1),
-                    duration: Duration(seconds: 4),
-                    curve: Curves.elasticOut,
-                    reverseCurve: Curves.linear,
-                  );
-                },
-                leading: buildText(context,color: bodyColor, title: 'Red Center Short Toast', font: 20),
-            ),
-            ListTile(
-              onTap: (){
-                showToast('This is normal toast with animation',
-                  context: context,
-                  animation: StyledToastAnimation.slideFromLeftFade,
-                  reverseAnimation: StyledToastAnimation.fade,
-                  position: const StyledToastPosition(
-                      align: Alignment.bottomCenter,
-                      offset: 30
+        child: CustomScrollView(
+          slivers: [
+            // App bar
+            SliverAppBar(
+              stretch: true,
+              pinned: true,
+              snap: false,
+              floating: false,
+              expandedHeight: 200,
+              shape: const ContinuousRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(60),
+                    bottomRight: Radius.circular(60)
+                )
+              ),
+              flexibleSpace: FlexibleSpaceBar(
+                title: const Text(
+                  'Flutter Map',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                   ),
-                  animDuration: const Duration(seconds: 1),
-                  duration: const Duration(seconds: 4),
-                  curve: Curves.easeInOutCubic,
-                  reverseCurve: Curves.linear,
-                  backgroundColor: Colors.green
-                );
-              },
-              leading: buildText(context,color: bodyColor, title: 'Green Buttom Short Toast', font: 20),
+                ),
+                background: Image.network(
+                  'https://img.freepik.com/free-photo/sea-texture-background_181624-26872.jpg?w=740&t=st=1702911034~exp=1702911634~hmac=83e6d229ca78d7089a2f1237941b08700e3b2431972046d9dbd879fce3068175',
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-
+            SliverList(
+                delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index){
+                        return ListTile(
+                          onTap: (){},
+                          title: Text('item ${i++}'),
+                        );
+                    }
+                ),
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
