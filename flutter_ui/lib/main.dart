@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter_ui/one_ui_nested_scroll_view.dart';
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(),
     );
@@ -23,58 +22,49 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
+
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final Color bodyColor = Theme.of(context).colorScheme.onBackground;
-    final Color appBarColor = Theme.of(context).colorScheme.primary;
-    var i = 0;
     return Scaffold(
-      body: Center(
-        child: CustomScrollView(
-          slivers: [
-            // App bar
-            SliverAppBar(
-              stretch: true,
-              pinned: true,
-              snap: false,
-              floating: false,
-              expandedHeight: 200,
-              shape: const ContinuousRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(60),
-                    bottomRight: Radius.circular(60)
-                )
+      body: OneUiNestedScrollView(
+        // expandedHeight: 400,
+        // toolbarHeight: 200,
+        expandedWidget: const Text(
+          'Contacts',
+          style: TextStyle(fontSize: 30),
+        ),
+        collapsedWidget: const Text(
+          'Contacts',
+          style: TextStyle(fontSize: 20),
+        ),
+        leadingIcon: IconButton(
+          onPressed: (){},
+          icon: const Icon(Icons.menu),
+        ),
+        boxDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondaryContainer,
+        ),
+        actions: [
+          IconButton(onPressed: (){}, icon: const Icon(Icons.more_vert)),
+          IconButton(onPressed: (){}, icon: const Icon(Icons.search)),
+          IconButton(onPressed: (){}, icon: const Icon(Icons.add)),
+        ],
+        sliverBackgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+        sliverList: SliverList(
+          delegate: SliverChildBuilderDelegate((context, index){
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
               ),
-              flexibleSpace: FlexibleSpaceBar(
-                title: const Text(
-                  'Flutter Map',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                  ),
-                ),
-                background: Image.network(
-                  'https://img.freepik.com/free-photo/sea-texture-background_181624-26872.jpg?w=740&t=st=1702911034~exp=1702911634~hmac=83e6d229ca78d7089a2f1237941b08700e3b2431972046d9dbd879fce3068175',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SliverList(
-                delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index){
-                        return ListTile(
-                          onTap: (){},
-                          title: Text('item ${i++}'),
-                        );
-                    }
-                ),
-            ),
-          ],
+              title: Text('Contact $index'),
+              textColor: Theme.of(context).colorScheme.secondaryContainer,
+            );
+          }),
         ),
       ),
     );
