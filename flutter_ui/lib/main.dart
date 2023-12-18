@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +32,6 @@ Widget buildText(BuildContext context,{required Color color, required String tit
   return Text(title, style: Theme.of(context).textTheme.titleMedium!.copyWith(
     color: color,
     fontSize: font,
-    fontWeight: FontWeight.bold,
   ),
   );
 }
@@ -49,36 +48,41 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-                onPressed: (){
-                  Fluttertoast.showToast(
-                      msg: "This is Center Short Toast",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.red,
-                      textColor: Colors.white,
-                      fontSize: 16.0
+            ListTile(
+                onTap: (){
+                  showToast('This is normal toast with animation',
+                    context: context,
+                    animation: StyledToastAnimation.scale,
+                    reverseAnimation: StyledToastAnimation.fade,
+                    position: StyledToastPosition.center,
+                    animDuration: Duration(seconds: 1),
+                    duration: Duration(seconds: 4),
+                    curve: Curves.elasticOut,
+                    reverseCurve: Curves.linear,
                   );
                 },
-                child: buildText(context,color: bodyColor, title: 'Red Center Short Toast', font: 20),
+                leading: buildText(context,color: bodyColor, title: 'Red Center Short Toast', font: 20),
             ),
-            ElevatedButton(
-              onPressed: (){
-                Fluttertoast.showToast(
-                    msg: "This is Buttom Short Toast",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-
+            ListTile(
+              onTap: (){
+                showToast('This is normal toast with animation',
+                  context: context,
+                  animation: StyledToastAnimation.slideFromLeftFade,
+                  reverseAnimation: StyledToastAnimation.fade,
+                  position: const StyledToastPosition(
+                      align: Alignment.bottomCenter,
+                      offset: 30
+                  ),
+                  animDuration: const Duration(seconds: 1),
+                  duration: const Duration(seconds: 4),
+                  curve: Curves.easeInOutCubic,
+                  reverseCurve: Curves.linear,
+                  backgroundColor: Colors.green
                 );
               },
-              child: buildText(context,color: bodyColor, title: 'Green Buttom Short Toast', font: 20),
+              leading: buildText(context,color: bodyColor, title: 'Green Buttom Short Toast', font: 20),
             ),
 
           ],
