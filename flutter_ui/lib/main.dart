@@ -22,12 +22,59 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  _alert(String alertTitle, String alertContent) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+            title: Text(alertTitle),
+            content: SizedBox(
+              height: 130,
+              child: Column(
+                children: [
+                  const Divider(
+                    color: Colors.black,
+                  ),
+                  Text(alertContent),
+                  const SizedBox(
+                    height: 7,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondaryContainer),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      child: const Text("Close"),
+                    ),
+                  )
+                ],
+              ),
+
+            ));
+      },
+      barrierDismissible: false,
+      barrierColor: Theme.of(context).colorScheme.secondaryContainer.withOpacity(.5),
+    );
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +99,12 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(onPressed: (){}, icon: const Icon(Icons.more_vert)),
           IconButton(onPressed: (){}, icon: const Icon(Icons.search)),
-          IconButton(onPressed: (){}, icon: const Icon(Icons.add)),
+          IconButton(
+              onPressed: () {
+                _alert('Not Implemented.',
+                    'This Icon Button has not been implemented yet.');
+              },
+              icon: const Icon(Icons.add)),
         ],
         sliverBackgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
         sliverList: SliverList(
