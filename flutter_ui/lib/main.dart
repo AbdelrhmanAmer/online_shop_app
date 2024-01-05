@@ -25,23 +25,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _contacts = List<int>.generate(15, (index) => index+1);
-  // _snackBar(String message, Function() onUndo){
-  //   ScaffoldMessenger.of(context).
-  //   showSnackBar(
-  //       SnackBar(
-  //         content: Text(message),
-  //         backgroundColor: Colors.red,
-  //         dismissDirection: DismissDirection.startToEnd,
-  //         duration: const Duration(seconds: 3),
-  //         action: SnackBarAction(
-  //           textColor: Colors.black,
-  //           onPressed: onUndo,
-  //           label: "Undo",
-  //         ),
-  //       ),
-  //   );
-  // }
+  final _contacts = [0, 1, 2, 3, 4 , 5, 6, 7, 8, 9, 10, 11, 12];
 
   @override
   Widget build(BuildContext context) {
@@ -84,15 +68,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   confirmDismiss: (direction)async{
-                    return await confirmAlert('Delete Contact', 'Are you sure that you want to delete this contact?', index);
+                    return await confirmAlert(
+                        'Delete Contact', 'Are you sure that you want to delete this contact?',
+                        _contacts[index]
+                    );
                   },
                   
-
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
                     ),
-                    title: Text('Contact $index'),
+                    title: Text('Contact ${_contacts[index]}'),
                     textColor: Theme.of(context).colorScheme.secondaryContainer,
                   ),
                 );
@@ -101,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-  confirmAlert(alertTitle, alertContent, int index)async{
+  confirmAlert(alertTitle, alertContent, int value)async{
     return showDialog(
         context: context,
         builder: (ctx){
@@ -111,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 150,
               child: Column(
                 children: [
-                  Divider(color: Colors.black,),
+                  const Divider(color: Colors.black,),
                   Text(alertContent),
                 ],
               ),
@@ -120,24 +106,24 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                   onPressed: (){
                     Navigator.of(context).pop(true);
-                    _contacts.removeAt(index-1);
-                    print(_contacts);
+                    _contacts.remove(value);
                     ScaffoldMessenger.of(context)
                         .showSnackBar(
                         SnackBar(
-                          content: Text("Contact $index deleted"),
+                          content: Text("Contact $value deleted"),
                           duration: const Duration(seconds: 3),
                           action: SnackBarAction(
                             onPressed: (){
-                              _contacts.insert(index, index);
-                              print(_contacts);
+                              setState(() {
+                                _contacts.add(value);
+                              });
                               // Navigator.of(context).pop(false);
                             },
                             label: "Undo",
                           ),
                         )
                     );
-                    // _contacts.removeAt(index);
+                    // _contacts.removeAt(value);
                   },
                   child: const Text("YES")),
               ElevatedButton(
