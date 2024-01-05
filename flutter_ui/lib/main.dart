@@ -58,81 +58,17 @@ class _MyHomePageState extends State<MyHomePage> {
           delegate: SliverChildBuilderDelegate(
               childCount: _contacts.length,
                   (context, index){
-
-                return Dismissible(
-                  key: UniqueKey(),
-                  background: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.red,
-                    ),
-                  ),
-                  confirmDismiss: (direction)async{
-                    return await confirmAlert(
-                        'Delete Contact', 'Are you sure that you want to delete this contact?',
-                        _contacts[index]
-                    );
-                  },
-                  
-                  child: ListTile(
+                return ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
                     ),
+                    onTap: (){},
                     title: Text('Contact ${_contacts[index]}'),
                     textColor: Theme.of(context).colorScheme.secondaryContainer,
-                  ),
-                );
+                  );
               }),
         ),
       ),
     );
-  }
-  confirmAlert(alertTitle, alertContent, int value)async{
-    return showDialog(
-        context: context,
-        builder: (ctx){
-          return AlertDialog(
-            title: Text(alertTitle),
-            content: SizedBox(
-              height: 150,
-              child: Column(
-                children: [
-                  const Divider(color: Colors.black,),
-                  Text(alertContent),
-                ],
-              ),
-            ),
-            actions: [
-              ElevatedButton(
-                  onPressed: (){
-                    Navigator.of(context).pop(true);
-                    _contacts.remove(value);
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(
-                        SnackBar(
-                          content: Text("Contact $value deleted"),
-                          duration: const Duration(seconds: 3),
-                          action: SnackBarAction(
-                            onPressed: (){
-                              setState(() {
-                                _contacts.add(value);
-                              });
-                              // Navigator.of(context).pop(false);
-                            },
-                            label: "Undo",
-                          ),
-                        )
-                    );
-                    // _contacts.removeAt(value);
-                  },
-                  child: const Text("YES")),
-              ElevatedButton(
-                  onPressed: (){
-                    Navigator.of(context).pop(false);
-                  },
-                  child: const Text("NO")),
-            ],
-          );
-        });
   }
 }
