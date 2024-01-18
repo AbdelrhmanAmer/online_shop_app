@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ui/fade_animation.dart';
+import 'package:flutter_ui/Animation/fade_animation.dart';
 
 class OneUiNestedScrollView extends StatefulWidget {
   const OneUiNestedScrollView({

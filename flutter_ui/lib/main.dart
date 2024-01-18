@@ -1,73 +1,92 @@
+// Component: Abstract base class for both leaf and composite elements
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_ui/one_ui_nested_scroll_view.dart';
 
-void main() => runApp(MyApp());
+abstract class DocumentElement{
+  Widget render();
+}
+// leaf: Represents a simple element, like a text element
+class TextElement extends DocumentElement{
+  String text;
 
-class MyApp extends StatelessWidget {
+  TextElement(this.text);
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
+  Widget render(){
+    return SelectableText(
+        text,
+      showCursor: true,
+      cursorWidth: 5,
+      contextMenuBuilder: (BuildContext context, EditableTextState editableTextState){
+          return AdaptiveTextSelectionToolbar.buttonItems(
+              buttonItems: <ContextMenuButtonItem>[
+                ...editableTextState.contextMenuButtonItems,
+                ContextMenuButtonItem(
+                    onPressed: (){
+                      ContextMenuController.removeAny();
+                      log("you have printed this value");
+                    },
+                  label: "print"
+                )
+              ],
+              anchors: editableTextState.contextMenuAnchors
+          );
+      },
+    );
+  }
+}
+// Composite: Represents a composite element, a paragraph containing multiple text
+class Paragraph extends DocumentElement{
+  final List<DocumentElement> _elements = [];
+
+  void addElement(DocumentElement element){
+    _elements.add(element);
+  }
+
+  @override
+  Widget render(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: _elements.map((element)=>element.render()).toList(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
+void main(){
+  runApp(const MyApp());
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final _contacts = [0, 1, 2, 3, 4 , 5, 6, 7, 8, 9, 10, 11, 12];
+class MyApp extends StatelessWidget{
+  const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: OneUiNestedScrollView(
-        // expandedHeight: 400,
-        // toolbarHeight: 200,
-        expandedWidget: const Text(
-          'Contacts',
-          style: TextStyle(fontSize: 30),
-        ),
-        collapsedWidget: const Text(
-          'Contacts',
-          style: TextStyle(fontSize: 20),
-        ),
-        leadingIcon: IconButton(
-          onPressed: (){},
-          icon: const Icon(Icons.menu),
-        ),
-        boxDecoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondaryContainer,
-        ),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-          IconButton( onPressed: () {}, icon: const Icon(Icons.add)),
-        ],
-        sliverBackgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
-        sliverList: SliverList(
-          delegate: SliverChildBuilderDelegate(
-              childCount: _contacts.length,
-                  (context, index){
-                return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-                    ),
-                    onTap: (){},
-                    title: Text('Contact ${_contacts[index]}'),
-                    textColor: Theme.of(context).colorScheme.secondaryContainer,
-                  );
-              }),
-        ),
+  Widget build(BuildContext context){
+    // creating leaf elements
+    var text1 = TextElement("this is a simple text element.");
+    var text2 = TextElement("Another text element.");
+
+    // creating a composite element (paragraph) and adding leaf elements to it.
+    var paragraph = Paragraph();
+    paragraph.addElement(text1);
+    paragraph.addElement(text2);
+
+    return MaterialApp(
+      home: Scaffold(
+          appBar: AppBar(title: const Text('Composite Pattern'),
+            leading: const Icon(Icons.home),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.primaryContainer,
+          ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                paragraph.render(),
+                text1.render(),
+              ],
+            ),
+          )
       ),
     );
   }
