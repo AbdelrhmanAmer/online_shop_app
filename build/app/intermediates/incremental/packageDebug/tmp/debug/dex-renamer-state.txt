@@ -1,0 +1,4 @@
+#Wed Jan 24 18:26:06 EET 2024
+base.0=/media/abdo/ff091e93-0df4-48b5-a6c7-42d26303b8f2/FlutterProjects/ui_projects/online_shop_app/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
