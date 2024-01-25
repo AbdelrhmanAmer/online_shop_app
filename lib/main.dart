@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:online_shop_app/constants.dart';
+import 'package:online_shop_app/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,30 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Text("Hoome Page"),
-      ),
+      home: const HomeScreen(),
     );
   }
 }
