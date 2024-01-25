@@ -7,6 +7,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
@@ -17,8 +18,34 @@ class Body extends StatelessWidget {
                 .titleLarge!
                 .copyWith(fontWeight: FontWeight.bold),
           ),
-        )
+        ),
+        const Categories()
       ],
+    );
+  }
+}
+class Categories extends StatefulWidget {
+  const Categories({super.key});
+
+  @override
+  State<Categories> createState() => _CategoriesState();
+}
+
+class _CategoriesState extends State<Categories> {
+  List<String> categories = ["Hand bag", "Jewellery", "Footwear", "Dresses"];
+  // default
+  int selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 130,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        itemBuilder: (ctx, index){
+        return Text(categories[index], style: TextStyle(color: Colors.black),);
+      }),
     );
   }
 }
