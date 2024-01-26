@@ -42,7 +42,7 @@ class ItemCard extends StatelessWidget {
               .textTheme
               .titleSmall!
               .copyWith(fontWeight: FontWeight.w900),
-        )
+        ),
       ],
     );
   }
